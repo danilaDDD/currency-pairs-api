@@ -23,25 +23,32 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2022.0.4")
+	set('springShellVersion', "3.1.4")
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.shell:spring-shell-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.asynchttpclient:async-http-client:2.12.3'
+	implementation 'org.json:json:20230618'
 	implementation files('../../library/internaljars/currency-api.jar')
 	implementation files('../../library/data-utils/build/libs/data-utils-1.0.0.jar')
-	testImplementation 'junit:junit:4.13.1'
-	testImplementation 'org.projectlombok:lombok:1.18.22'
+	implementation files('../../library/jfund-cli-lib/build/libs/jfund-cli-lib-1.0.0.jar')
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.9.2'
+	testImplementation 'org.testcontainers:junit-jupiter:1.15.1'
+	testImplementation 'junit:junit:4.13.1'
+	testImplementation 'org.projectlombok:lombok:1.18.22'
+	runtimeOnly 'org.postgresql:postgresql'
 }
 
 dependencyManagement {
 	imports {
+		mavenBom "org.springframework.shell:spring-shell-dependencies:${springShellVersion}"
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }

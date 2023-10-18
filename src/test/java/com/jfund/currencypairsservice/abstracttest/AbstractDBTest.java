@@ -1,26 +1,21 @@
 package com.jfund.currencypairsservice.abstracttest;
 
 import lombok.Getter;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
-@DataMongoTest
 public abstract class AbstractDBTest {
     @Getter
-    private final MongoTemplate mongoTemplate;
+    private final String tableName = "currency_pairs";
 
-    @Getter
-    String collectionName = "currencyPairs";
-    @Autowired
-    public AbstractDBTest(MongoTemplate mongoTemplate){
-        this.mongoTemplate = mongoTemplate;
+    private JdbcTemplate jdbcTemplate;
+
+    public AbstractDBTest(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    @BeforeEach
-    public void beforeEach(){
-        mongoTemplate.remove(new Query(), collectionName);
+    public void cleanTable(){
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, tableName);
     }
 }

@@ -1,12 +1,19 @@
 spring:
-  data:
-    mongodb:
-      host: ${DB_HOST_TEST:localhost}
-      port: ${DB_PORT_TEST:27017}
-      database: ${DB_NAME_TEST:jfundCurrencyPairsTest}
-      username: ${DB_USER_TEST:dev}
-      password: ${DB_PASSWORD_TEST:float123}
-      authentication-database: admin
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/jfund_test_currency_pairs}
+    username: ${DB_USER:jfund}
+    password: ${DB_PASSWORD:float123}
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/jfund_test_currency_pairs}
+    user: ${DB_USER:jfund}
+    password: ${DB_PASSWORD:float123}
 
 currencyApi:
   accessKey: ${CURRENCY_ACCESS_KEY:5619c1c4f1011d7b8c0b32054e2e676b}

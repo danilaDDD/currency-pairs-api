@@ -3,21 +3,28 @@ package com.jfund.currencypairsservice.service;
 import com.jfund.currencypairsservice.abstracttest.AbstractDBTest;
 import com.jfund.currencypairsservice.model.CurrencyPair;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@DataMongoTest
+@SpringBootTest
 public class CurrencyPairServiceTest extends AbstractDBTest {
     private final AsyncCurrencyPairService asyncCurrencyPairService;
 
+    @BeforeEach
+    public void beforeEach(){
+        cleanTable();
+    }
+
     @Autowired
-    public CurrencyPairServiceTest(MongoTemplate mongoTemplate, AsyncCurrencyPairService service){
-        super(mongoTemplate);
+    public CurrencyPairServiceTest(JdbcTemplate jdbcTemplate, AsyncCurrencyPairService service){
+        super(jdbcTemplate);
         this.asyncCurrencyPairService = service;
     }
 
@@ -25,14 +32,13 @@ public class CurrencyPairServiceTest extends AbstractDBTest {
     public void insertTest() throws ExecutionException, InterruptedException {
         List<CurrencyPair> currencyList = List.of(
                 new CurrencyPair("USD", "JPG", true),
-                new CurrencyPair("USD", "GBP", false),
-                new CurrencyPair()
+                new CurrencyPair("USD", "GBP", false)
         );
 
         this.asyncCurrencyPairService.insert(currencyList).get();
         int currencyCount = this.asyncCurrencyPairService.findAll().get().size();
 
-        Assertions.assertEquals(currencyCount, 3);
+        Assertions.assertEquals(currencyCount, 2);
     }
 
     @Test
@@ -40,7 +46,6 @@ public class CurrencyPairServiceTest extends AbstractDBTest {
         List<CurrencyPair> toCreateCurrencyPairList = List.of(
                 new CurrencyPair("USD", "JPG", true),
                 new CurrencyPair("USD", "GBP", false)
-
         );
 
         asyncCurrencyPairService.insert(toCreateCurrencyPairList).get();
@@ -51,7 +56,7 @@ public class CurrencyPairServiceTest extends AbstractDBTest {
                         currencyPair.setToKey(currencyPair.getToKey() + "1");
                     });
                     return entityList;
-                }).thenAccept(asyncCurrencyPairService::update).get();
+                }).thenAccept(currencyPairs -> asyncCurrencyPairService.update(currencyPairs)).get();
 
         long changedCount = asyncCurrencyPairService.findAll().get()
                 .stream()
