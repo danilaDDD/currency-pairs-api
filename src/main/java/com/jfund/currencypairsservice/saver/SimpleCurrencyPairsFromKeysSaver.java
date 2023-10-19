@@ -42,7 +42,7 @@ public class SimpleCurrencyPairsFromKeysSaver implements CurrencyPairsFromKeysSa
         int createdCount = currencyPairService.insert(pairsObjectToCreate).get().size();
 
         int deletedCount = 0;
-        if (currencyPairsToDelete.size() > 0) {
+        if (!currencyPairsToDelete.isEmpty()) {
             currencyPairService.deleteByKeys(currencyPairsToDelete).get();
             deletedCount = currencyPairsToDelete.size();
         }
