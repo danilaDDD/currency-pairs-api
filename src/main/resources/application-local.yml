@@ -17,3 +17,7 @@ spring:
 
 currencyApi:
   accessKey: ${CURRENCY_ACCESS_KEY:5619c1c4f1011d7b8c0b32054e2e676b}
+
+kafka:
+  server: ${KAFKA_SERVER:localhost:9092}
+  topic-name: "currency.keys"
