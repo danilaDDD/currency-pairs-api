@@ -15,7 +15,15 @@ public abstract class AbstractDBTest {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void cleanTable(){
+    public void cleanTable(String tableName){
         JdbcTestUtils.deleteFromTables(jdbcTemplate, tableName);
+    }
+
+    public void cleanCurrencyPairsTable(){
+        cleanTable("currency_pairs");
+    }
+
+    public void cleanCurrencyValuesTable(){
+        cleanTable("currency_values");
     }
 }

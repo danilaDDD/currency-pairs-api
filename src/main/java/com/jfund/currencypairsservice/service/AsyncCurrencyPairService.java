@@ -19,11 +19,19 @@ public class AsyncCurrencyPairService extends BaseCrudAsyncService<CurrencyPair,
     }
 
     public CompletableFuture<List<CurrencyPair>> findByShowInCandle(boolean showInCandle){
-        return supplyAsyncList(() -> (((CurrencyPairRepository)getBaseRepository()).findCurrencyPairByShowInCandle(showInCandle)));
+        return supplyAsyncList(() -> (getCurrencyPairRepository().findCurrencyPairByShowInCandle(showInCandle)));
     }
 
     public CompletableFuture<List<CurrencyPair>> deleteByKeys(Set<String> currencyKeys){
-        return supplyAsyncList(() -> (((CurrencyPairRepository)getBaseRepository()).deleteCurrencyPairByKeyIn(currencyKeys)));
+        return supplyAsyncList(() -> (getCurrencyPairRepository().deleteCurrencyPairByKeyIn(currencyKeys)));
+    }
+
+    public CompletableFuture<List<CurrencyPair>> findToCandleApi(){
+        return supplyAsyncList(() -> (getCurrencyPairRepository().findCurrencyPairByShowInCandle(true)));
+    }
+
+    public CurrencyPairRepository getCurrencyPairRepository(){
+        return (CurrencyPairRepository)getBaseRepository();
     }
 
 }

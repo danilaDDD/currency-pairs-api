@@ -22,7 +22,7 @@ public class CurrencyPairsFromKeysSaverTest extends AbstractDBTest {
     private final AsyncCurrencyPairService currencyPairService;
     @BeforeEach
     public void beforeEach(){
-        cleanTable();
+        cleanCurrencyPairsTable();
     }
 
     @Autowired

@@ -22,7 +22,7 @@ public class CurrencyPairRepositoryTest extends AbstractDBTest {
 
     @BeforeEach
     public void beforeEach(){
-        cleanTable();
+        cleanCurrencyPairsTable();
     }
 
     @Autowired
