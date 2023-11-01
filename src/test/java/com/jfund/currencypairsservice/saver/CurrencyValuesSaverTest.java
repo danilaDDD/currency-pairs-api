@@ -48,7 +48,7 @@ public class CurrencyValuesSaverTest extends AbstractDBTest {
     public void testInsertDifferentByValueCurrencyValues() throws ExecutionException, InterruptedException {
         Map<String, Float> currencyData1, currencyData2;
         currencyData1 = Map.of("USDJPG", 16.56F, "JPGRUB", 15.45F, "USDRUB", 102.23F);
-        currencyData2 = Map.of("USDJPG", 16.5601F, "JPGRUB", 15.452F, "USDRUB", 102.25F);
+        currencyData2 = Map.of("USDJPG", 16.56F, "JPGRUB", 15.452F, "USDRUB", 102.25F);
 
         currencyValuesSaver.saveCurrencyValues(currencyData1);
         UpdateOrCreateData lastSaveData = currencyValuesSaver.saveCurrencyValues(currencyData2);
@@ -57,5 +57,15 @@ public class CurrencyValuesSaverTest extends AbstractDBTest {
 
         assertEquals(2, lastSaveData.getCreateCount());
         assertEquals(5, currencyValues.size());
+    }
+
+    @Test
+    public void testRepeatSaveCurrencyValuesWithEqualsData() throws ExecutionException, InterruptedException {
+        Map<String, Float> currencyValuesMap = Map.of("USDJPG", 16.56F, "JPGRUB", 15.45F, "USDRUB", 102.23F);
+
+        currencyValuesSaver.saveCurrencyValues(currencyValuesMap);
+        currencyValuesSaver.saveCurrencyValues(currencyValuesMap);
+
+        assertEquals(3, currencyValueService.count().get());
     }
 }

@@ -1,10 +1,8 @@
 package com.jfund.currencypairsservice.saver;
 
 import com.jfund.currencypairsservice.model.CurrencyValue;
-import com.jfund.currencypairsservice.repository.CurrencyValueRepository;
 import com.jfund.currencypairsservice.service.AsyncCurrencyValueService;
 import com.jfund.jfundclilib.UpdateOrCreateData;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +17,7 @@ public class SimpleCurrencyValuesSaver implements CurrencyValuesSaver {
     @Autowired
     private AsyncCurrencyValueService currencyValueService;
     private final float accuracy = 0.0001F;
-    private final LocalDateTime now = LocalDateTime.now();
+    private final LocalDateTime runDateTime = LocalDateTime.now();
 
     public SimpleCurrencyValuesSaver(){}
     @Autowired
@@ -36,14 +34,30 @@ public class SimpleCurrencyValuesSaver implements CurrencyValuesSaver {
     }
 
     private UpdateOrCreateData handleSaveProcess(Map<String, Float> inputKeyValueMap) throws ExecutionException, InterruptedException {
-        Map<String, CurrencyValue> lastCurrencyValueKeyToEntity = currencyValueService.findTopByDateTimeOfActuality().get()
+        Map<String, CurrencyValue> lastCurrencyValueKeyToEntity = currencyValueService.findLastByDateTimeOfActuality().get()
                 .stream()
                 .collect(Collectors.toMap(CurrencyValue::getKey, Function.identity()));
 
-        List<CurrencyValue> toInsertCurrencyValues = getChangedByValueNewValues(inputKeyValueMap, lastCurrencyValueKeyToEntity);
-        currencyValueService.insert(toInsertCurrencyValues).get();
+        if (lastCurrencyValueKeyToEntity.isEmpty()){
+            return insertAll(inputKeyValueMap);
+        }
 
-        return new UpdateOrCreateData().setCreateCount(toInsertCurrencyValues.size());
+        List<CurrencyValue> toInsertCurrencyValues = getChangedByValueNewValues(inputKeyValueMap, lastCurrencyValueKeyToEntity);
+        if (!toInsertCurrencyValues.isEmpty()) {
+            currencyValueService.insert(toInsertCurrencyValues).get();
+            return new UpdateOrCreateData().setCreateCount(toInsertCurrencyValues.size());
+        }
+
+        return new UpdateOrCreateData();
+    }
+
+    private UpdateOrCreateData insertAll(Map<String, Float> inputKeyValueMap) throws ExecutionException, InterruptedException {
+        List<CurrencyValue> currencyValues = inputKeyValueMap.entrySet().stream()
+                .map(entryKeyValue -> new CurrencyValue(entryKeyValue.getKey(), entryKeyValue.getValue(), this.runDateTime)).toList();
+        if(!currencyValues.isEmpty())
+            this.currencyValueService.insert(currencyValues).get();
+
+        return new UpdateOrCreateData().setCreateCount(currencyValues.size());
     }
 
     private List<CurrencyValue> getChangedByValueNewValues(Map<String, Float> inputKeyValueMap, Map<String, CurrencyValue> lastCurrencyValueKeyToEntity) throws ExecutionException, InterruptedException {
@@ -58,10 +72,10 @@ public class SimpleCurrencyValuesSaver implements CurrencyValuesSaver {
                         }
 
                         return true;
-        }).map(entryKeyValue -> new CurrencyValue(entryKeyValue.getKey(), entryKeyValue.getValue(), this.now)).toList();
+        }).map(entryKeyValue -> new CurrencyValue(entryKeyValue.getKey(), entryKeyValue.getValue(), this.runDateTime)).toList();
     }
 
     private boolean isDifferentValue(CurrencyValue currencyValue, float value){
-        return Math.abs(value - currencyValue.getValue()) < this.accuracy;
+        return Math.abs(value - currencyValue.getValue()) > this.accuracy;
     }
 }

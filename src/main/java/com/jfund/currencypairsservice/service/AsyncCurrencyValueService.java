@@ -21,7 +21,7 @@ public class AsyncCurrencyValueService extends BaseCrudAsyncService<CurrencyValu
         return (CurrencyValueRepository) super.getBaseRepository();
     }
 
-    public CompletableFuture<List<CurrencyValue>> findTopByDateTimeOfActuality(){
-        return supplyAsyncList(() -> (getCurrencyValueRepository().findTopByOrderByDateTimeOfActuality()));
+    public CompletableFuture<List<CurrencyValue>> findLastByDateTimeOfActuality(){
+        return supplyAsyncList(() -> (getCurrencyValueRepository().findLastByOrderByDateTimeOfActuality()));
     }
 }
