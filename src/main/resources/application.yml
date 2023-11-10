@@ -8,3 +8,10 @@ spring:
     name: currency-pairs-service
   profiles:
     active: ${PROFILE:local}
+
+server:
+  port: 8081
+
+app:
+  kafka:
+    currency-keys-topic: ${CURRENCY_KEYS_TOPIC:jfund-currency-keys}
