@@ -9,24 +9,17 @@ import org.springframework.shell.standard.ShellMethod;
 @ShellComponent
 public class ShellCommands {
     private final CliRunner loadCurrencyPairsCliRunner;
-    private final CliRunner loadCurrencyValuesCliRunner;
     private final CliRunner kafkaSendCurrencyKeys;
 
     @Autowired
-    public ShellCommands(LoadCurrencyPairsCliRunner loadCurrencyPairsCliRunner, LoadCurrencyValuesCliRunner loadCurrencyValuesCliRunner, KafkaSendCurrencyKeys kafkaSendCurrencyKeys) {
+    public ShellCommands(LoadCurrencyPairsCliRunner loadCurrencyPairsCliRunner, KafkaSendCurrencyKeys kafkaSendCurrencyKeys) {
         this.loadCurrencyPairsCliRunner = loadCurrencyPairsCliRunner;
-        this.loadCurrencyValuesCliRunner = loadCurrencyValuesCliRunner;
         this.kafkaSendCurrencyKeys = kafkaSendCurrencyKeys;
     }
 
     @ShellMethod(key = "load-currency-pairs")
     public String loadCurrencyPairs(){
         return launchCliRunner(this.loadCurrencyPairsCliRunner);
-    }
-
-    @ShellMethod(key = "load-currency-values")
-    public String loadCurrencyValues(){
-        return launchCliRunner(loadCurrencyValuesCliRunner);
     }
 
     @ShellMethod(key = "send-currency-keys-msg")

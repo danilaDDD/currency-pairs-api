@@ -9,14 +9,7 @@ import org.springframework.stereotype.Component;
 @Configuration
 @EnableScheduling
 public class Schedules {
-    private LoadCurrencyValuesCliRunner loadCurrencyValuesCliRunner;
     private KafkaSendCurrencyKeys kafkaSendCurrencyKeys;
-
-    @Autowired
-    public void setLoadCurrencyValuesCliRunner(LoadCurrencyValuesCliRunner loadCurrencyValuesCliRunner) {
-        this.loadCurrencyValuesCliRunner = loadCurrencyValuesCliRunner;
-    }
-
     @Autowired
     public void setKafkaSendCurrencyKeys(KafkaSendCurrencyKeys kafkaSendCurrencyKeys) {
         this.kafkaSendCurrencyKeys = kafkaSendCurrencyKeys;
