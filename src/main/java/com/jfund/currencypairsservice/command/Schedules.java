@@ -21,10 +21,7 @@ public class Schedules {
     public void setKafkaSendCurrencyKeys(KafkaSendCurrencyKeys kafkaSendCurrencyKeys) {
         this.kafkaSendCurrencyKeys = kafkaSendCurrencyKeys;
     }
-    public void loadCurrencyValuesFromCurrencyApi(){
-        loadCurrencyValuesCliRunner.invoke();
-    }
-    @Scheduled(fixedRate = 5000)
+
     public void sendCurrencyKeysValueByMessaging(){
         this.kafkaSendCurrencyKeys.invoke();
     }

@@ -25,14 +25,10 @@ public class SimpleCurrencyKeysProducer implements CurrencyKeysProducer{
     public void setProducerSettings(ProducerSettings producerSettings) {
         this.producerSettings = producerSettings;
     }
-    @Autowired
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
     @Override
     public void sendCurrencyKeys(CurrencyKeysProducerData currencyKeysProducerData) throws ExecutionException, InterruptedException, JsonProcessingException {
         List<String> currencyKeys = currencyKeysProducerData.getAvailableCurrencyKeys();
-        String joinedCurrencyKeysValue = String.join(",", currencyKeys);
-        kafkaTemplate.send(producerSettings.getTopic(), joinedCurrencyKeysValue);
+        String serializedCurrencyKeys = new ObjectMapper().writeValueAsString(currencyKeys);
+        kafkaTemplate.send(producerSettings.getTopic(), serializedCurrencyKeys);
     }
 }
