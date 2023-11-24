@@ -1,5 +1,6 @@
 package com.jfund.currencypairsservice.request;
 
+import com.jfund.currencypairsservice.exceptions.CurrencyApiRequestRuntimeException;
 import currencyapi.exceptions.CurrencyBadRequestException;
 import currencyapi.handler.GetAllCurrencyPairsRequestHandler;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,11 @@ public class SyncGetCurrencyPairsRequest implements GetCurrencyPairsRequest{
     }
 
     @Override
-    public List<String> getCurrencyPairs() throws CurrencyBadRequestException, ExecutionException, InterruptedException {
-        return new GetAllCurrencyPairsRequestHandler(this.accessKey).handle();
+    public List<String> getCurrencyPairs() {
+        try {
+            return new GetAllCurrencyPairsRequestHandler(this.accessKey).handle();
+        } catch (CurrencyBadRequestException | ExecutionException | InterruptedException e) {
+            throw new CurrencyApiRequestRuntimeException(e);
+        }
     }
 }

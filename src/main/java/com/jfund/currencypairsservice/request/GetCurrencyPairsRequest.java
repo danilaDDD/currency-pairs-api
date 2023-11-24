@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-@Component
 public interface GetCurrencyPairsRequest{
     List<String> getCurrencyPairs() throws CurrencyBadRequestException, ExecutionException, InterruptedException;
 }

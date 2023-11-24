@@ -56,7 +56,7 @@ public class CurrencyPairServiceTest extends AbstractDBTest {
                         currencyPair.setToKey(currencyPair.getToKey() + "1");
                     });
                     return entityList;
-                }).thenAccept(currencyPairs -> asyncCurrencyPairService.update(currencyPairs)).get();
+                }).thenAccept(asyncCurrencyPairService::update).get();
 
         long changedCount = asyncCurrencyPairService.findAll().get()
                 .stream()

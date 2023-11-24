@@ -2,6 +2,7 @@ package com.jfund.currencypairsservice.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jfund.currencypairsservice.exceptions.CurrencyKeyProducerRuntimeException;
 import com.jfund.currencypairsservice.settings.ProducerSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -23,9 +24,13 @@ public class SimpleCurrencyKeysProducer implements CurrencyKeysProducer{
         this.producerSettings = producerSettings;
     }
     @Override
-    public void sendCurrencyKeys(CurrencyKeysProducerData currencyKeysProducerData) throws JsonProcessingException {
-        List<String> currencyKeys = currencyKeysProducerData.getAvailableCurrencyKeys();
-        String serializedCurrencyKeys = new ObjectMapper().writeValueAsString(currencyKeys);
-        kafkaTemplate.send(producerSettings.getTopic(), serializedCurrencyKeys);
+    public void sendCurrencyKeys(CurrencyKeysProducerData currencyKeysProducerData) {
+        try {
+            List<String> currencyKeys = currencyKeysProducerData.getAvailableCurrencyKeys();
+            String serializedCurrencyKeys = new ObjectMapper().writeValueAsString(currencyKeys);
+            kafkaTemplate.send(producerSettings.getTopic(), serializedCurrencyKeys);
+        } catch (JsonProcessingException e) {
+            throw new CurrencyKeyProducerRuntimeException(e);
+        }
     }
 }

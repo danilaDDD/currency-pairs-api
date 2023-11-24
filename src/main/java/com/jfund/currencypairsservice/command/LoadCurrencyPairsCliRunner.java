@@ -29,7 +29,6 @@ public class LoadCurrencyPairsCliRunner implements CliRunner {
             List<String> currencyPairsFromApi = getCurrencyPairsRequest.getCurrencyPairs();
             return this.currencyPairsFromKeysSaver.save(currencyPairsFromApi);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("load current pairs errors");
             log.error(e.toString());
             return new UpdateOrCreateData(e.toString());
