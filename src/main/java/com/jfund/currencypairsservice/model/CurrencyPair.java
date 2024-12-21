@@ -1,17 +1,26 @@
 package com.jfund.currencypairsservice.model;
 
-import com.jfund.datautils.entity.AbstractEntity;
-import jakarta.persistence.*;
+import com.jfund.commonlib.entity.AbstractEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Table(name = "currency_pairs")
 @AllArgsConstructor
-public class CurrencyPair extends AbstractEntity{
+public class CurrencyPair extends AbstractEntity {
+    public static CurrencyPair ofCode(String code){
+        String fromKey = code.substring(0, 3);
+        String toKey = code.substring(3, 6);
+
+        return new CurrencyPair(fromKey, toKey, true);
+    }
     @Getter
     @Setter
     @Id
@@ -57,14 +66,13 @@ public class CurrencyPair extends AbstractEntity{
         return key;
     }
 
-    public void setFromKey(String fromKey) {
-        this.fromKey = fromKey;
-        updateKey();
-    }
-
     public void setToKey(String toKey) {
         this.toKey = toKey;
         updateKey();
+    }
+
+    public String getKey(){
+        return fromKey + toKey;
     }
 
     @Override

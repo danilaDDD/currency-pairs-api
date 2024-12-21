@@ -1,34 +1,23 @@
 package com.jfund.currencypairsservice.command;
 
-import com.jfund.jfundclilib.CliRunner;
-import com.jfund.jfundclilib.UpdateOrCreateData;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 @ShellComponent
+@RequiredArgsConstructor
 public class ShellCommands {
-    private final CliRunner loadCurrencyPairsCliRunner;
-    private final CliRunner kafkaSendCurrencyKeys;
-
-    @Autowired
-    public ShellCommands(LoadCurrencyPairsCliRunner loadCurrencyPairsCliRunner, KafkaSendCurrencyKeys kafkaSendCurrencyKeys) {
-        this.loadCurrencyPairsCliRunner = loadCurrencyPairsCliRunner;
-        this.kafkaSendCurrencyKeys = kafkaSendCurrencyKeys;
-    }
+    private final LoadCurrencyPairsCliRunner loadCurrencyPairsCliRunner;
+    private final KafkaSendCurrencyKeys kafkaSendCurrencyKeys;
 
     @ShellMethod(key = "load-currency-pairs")
-    public String loadCurrencyPairs(){
-        return launchCliRunner(this.loadCurrencyPairsCliRunner);
+    public void loadCurrencyPairs(){
+        loadCurrencyPairsCliRunner.invoke();
     }
 
     @ShellMethod(key = "send-currency-keys-msg")
-    public String sendCurrencyKeysToKafka(){
-        return launchCliRunner(kafkaSendCurrencyKeys);
+    public void sendCurrencyKeysToKafka(){
+        kafkaSendCurrencyKeys.invoke();
     }
 
-    private String launchCliRunner(CliRunner cliRunner){
-        UpdateOrCreateData updateOrCreateData = cliRunner.invoke();
-        return updateOrCreateData.toString();
-    }
 }
