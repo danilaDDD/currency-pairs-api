@@ -8,10 +8,7 @@ spring:
     username: ${DB_USER:jfund}
     password: ${DB_PASSWORD:float123}
     driver-class-name: org.postgresql.Driver
-  flyway:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/jfund_test_currency_pairs}
-    user: ${DB_USER:jfund}
-    password: ${DB_PASSWORD:float123}
-
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
 currencyApi:
   accessKey: ${CURRENCY_ACCESS_KEY:ec142f3d17eb97486b71d155d609471a}
