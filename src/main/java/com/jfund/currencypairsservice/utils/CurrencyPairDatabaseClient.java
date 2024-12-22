@@ -1,11 +1,8 @@
 package com.jfund.currencypairsservice.utils;
 
-import com.jfund.currencypairsservice.model.CurrencyPair;
 import lombok.RequiredArgsConstructor;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

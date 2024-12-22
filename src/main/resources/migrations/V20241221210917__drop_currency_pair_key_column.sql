@@ -1,1 +1,0 @@
-ALTER TABLE currency_pairs DROP COLUMN key;

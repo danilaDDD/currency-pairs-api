@@ -1,6 +1,5 @@
 package com.jfund.currencypairsservice.model;
 
-import com.jfund.commonlib.entity.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.relational.core.mapping.Table;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Table(name = "currency_pairs")
