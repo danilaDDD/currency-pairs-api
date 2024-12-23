@@ -12,13 +12,12 @@ import java.util.List;
 @Slf4j(topic = "errors")
 @Component
 @RequiredArgsConstructor
-public class LoadCurrencyPairsCliRunner{
+public class CurrencyPairsLoader {
     private final CurrencyPairService currencyPairService;
     private final GetCurrencyPairsRequest getCurrencyPairsRequest;
 
     public void invoke() {
         List<CurrencyPair> currencyPairsFromApi = getCurrencyPairsRequest.getCurrencyPairs();
         currencyPairService.saveCurrentAndDeleteOther(currencyPairsFromApi).subscribe();
-
     }
 }

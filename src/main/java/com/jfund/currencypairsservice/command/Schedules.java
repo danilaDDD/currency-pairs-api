@@ -1,16 +1,16 @@
 package com.jfund.currencypairsservice.command;
 
+import com.jfund.currencypairsservice.producer.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 @Configuration
 @EnableScheduling
 @RequiredArgsConstructor
 public class Schedules {
-    private final KafkaSendCurrencyKeys kafkaSendCurrencyKeys;
-    private final LoadCurrencyPairsCliRunner loadCurrencyPairsCliRunner;
+    private final KafkaProducer kafkaProducer;
+    private final CurrencyPairsLoader currencyPairsLoader;
 
 //    @Scheduled(fixedRate = 50_000)
 //    public void sendCurrencyKeysByKafka(){
