@@ -16,6 +16,10 @@ public class CurrencyPairService {
         this.currencyPairRepository = currencyPairRepository;
     }
 
+    public Flux<CurrencyPair> findActiveAll() {
+        return currencyPairRepository.findAllByShowInCandleTrue();
+    }
+
     /**
      * Overwrites currency pairs.
      * In this case, currency pairs missing in currencyPairsToSave are deleted
@@ -43,5 +47,4 @@ public class CurrencyPairService {
                 });
 
     }
-
 }

@@ -3,27 +3,26 @@ package com.jfund.currencypairsservice.command;
 import com.jfund.currencypairsservice.model.CurrencyPair;
 import com.jfund.currencypairsservice.producer.CurrencyKeysProducer;
 import com.jfund.currencypairsservice.producer.CurrencyKeysProducerData;
-import com.jfund.currencypairsservice.request.GetCurrencyPairsRequest;
+import com.jfund.currencypairsservice.service.CurrencyPairService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 @Slf4j(topic = "errors")
 @Component
 @RequiredArgsConstructor
 public class KafkaSendCurrencyKeys{
     private final CurrencyKeysProducer currencyKeysProducer;
-    private final GetCurrencyPairsRequest getCurrencyPairsRequest;
-
+    private final CurrencyPairService currencyPairService;
+    // @FIXME specify exception classes
     public void invoke() {
 
         try {
-            List<String> currencyKeys = this.getCurrencyPairsRequest.getCurrencyPairs().stream()
-                    .map(CurrencyPair::getKey)
-                    .toList();
+            currencyPairService.findActiveAll().collectList()
+                    .map(currencyPairs -> new CurrencyKeysProducerData(currencyPairs.stream().map(CurrencyPair::getKey)
+                            .toList()))
 
-            this.currencyKeysProducer.sendCurrencyKeys(new CurrencyKeysProducerData(currencyKeys));
+                            .subscribe(currencyKeysProducer::sendCurrencyKeys);
 
         } catch (Exception e) {
             log.error(e.toString());
