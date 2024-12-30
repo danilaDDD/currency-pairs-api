@@ -12,3 +12,6 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
 currencyApi:
   accessKey: ${CURRENCY_ACCESS_KEY:ec142f3d17eb97486b71d155d609471a}
+eureka:
+  client:
+    enabled: false
