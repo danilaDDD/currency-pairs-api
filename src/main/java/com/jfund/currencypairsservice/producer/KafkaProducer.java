@@ -1,7 +1,8 @@
 package com.jfund.currencypairsservice.producer;
 
+import com.jfund.currencypairsservice.command.CurrencyKeysProducer;
 import com.jfund.currencypairsservice.model.CurrencyPair;
-import com.jfund.currencypairsservice.service.CurrencyPairService;
+import com.jfund.currencypairsservice.service.ReplaceCurrencyPairService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,12 +12,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaProducer {
     private final CurrencyKeysProducer currencyKeysProducer;
-    private final CurrencyPairService currencyPairService;
+    private final ReplaceCurrencyPairService replaceCurrencyPairService;
     // @FIXME specify exception classes
     public void invoke() {
 
         try {
-            currencyPairService.findActiveAll().collectList()
+            replaceCurrencyPairService.findActiveAll().collectList()
                     .map(currencyPairs -> new CurrencyKeysProducerData(currencyPairs.stream().map(CurrencyPair::getKey)
                             .toList()))
 

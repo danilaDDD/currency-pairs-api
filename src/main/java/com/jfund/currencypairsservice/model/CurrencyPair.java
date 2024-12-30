@@ -33,7 +33,7 @@ public class CurrencyPair {
 
     @Setter
     @Column(name = "show_in_candle", nullable = false)
-    private Boolean showInCandle = true;
+    private boolean showInCandle = true;
 
     public CurrencyPair() {}
 

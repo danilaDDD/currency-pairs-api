@@ -1,8 +1,9 @@
-package com.jfund.currencypairsservice.producer;
+package com.jfund.currencypairsservice.command;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jfund.currencypairsservice.exceptions.CurrencyKeyProducerRuntimeException;
+import com.jfund.currencypairsservice.producer.CurrencyKeysProducerData;
 import com.jfund.currencypairsservice.settings.ProducerSettings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
