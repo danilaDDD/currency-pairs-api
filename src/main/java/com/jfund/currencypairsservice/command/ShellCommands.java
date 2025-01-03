@@ -1,6 +1,5 @@
 package com.jfund.currencypairsservice.command;
-
-import com.jfund.currencypairsservice.producer.KafkaProducer;
+import com.jfund.currencypairsservice.producer.CurrencyPairsProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -9,7 +8,7 @@ import org.springframework.shell.standard.ShellMethod;
 @RequiredArgsConstructor
 public class ShellCommands {
     private final CurrencyPairsLoader currencyPairsLoader;
-    private final KafkaProducer kafkaProducer;
+    private final CurrencyPairsProducer kafkaProducer;
 
     @ShellMethod(key = "load-currency-pairs")
     public void loadCurrencyPairs(){
@@ -18,7 +17,7 @@ public class ShellCommands {
 
     @ShellMethod(key = "send-currency-keys-msg")
     public void sendCurrencyKeysToKafka(){
-        kafkaProducer.invoke();
+        kafkaProducer.sendCurrencyKeys();
     }
 
 }
