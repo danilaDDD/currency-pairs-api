@@ -2,9 +2,9 @@ package com.jfund.currencypairsservice.data;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -13,9 +13,14 @@ import java.util.Objects;
 public class CurrencyPairsProducerData {
     private final String serializedData;
     private final boolean empty;
+    private final LocalDateTime createdAt;
 
     public CurrencyPairsProducerData(String serializedData) {
-        this(serializedData, false);
+        this(serializedData, false, LocalDateTime.now());
+    }
+
+    public CurrencyPairsProducerData(String serializedData, boolean empty) {
+        this(serializedData, empty, LocalDateTime.now());
     }
 
     @Override
