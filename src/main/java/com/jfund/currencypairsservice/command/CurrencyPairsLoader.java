@@ -1,7 +1,7 @@
 package com.jfund.currencypairsservice.command;
 
 import com.jfund.currencypairsservice.model.CurrencyPair;
-import com.jfund.currencypairsservice.utils.GetCurrencyPairsRequest;
+import com.jfund.currencypairsservice.service.LoadCurrencyPairsService;
 import com.jfund.currencypairsservice.service.ReplaceCurrencyPairService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +13,10 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class CurrencyPairsLoader {
     private final ReplaceCurrencyPairService replaceCurrencyPairService;
-    private final GetCurrencyPairsRequest getCurrencyPairsRequest;
+    private final LoadCurrencyPairsService loadCurrencyPairsService;
 
     public void invoke() {
-        Flux<CurrencyPair> currencyPairsFromApi = getCurrencyPairsRequest.getCurrencyPairsFlux();
+        Flux<CurrencyPair> currencyPairsFromApi = loadCurrencyPairsService.getCurrencyPairsFlux();
         replaceCurrencyPairService.replaceCurrencyPairs(currencyPairsFromApi).subscribe();
     }
 }
