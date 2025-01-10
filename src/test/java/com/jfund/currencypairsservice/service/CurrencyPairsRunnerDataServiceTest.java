@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class CurrencyPairsProducerDataServiceTest {
+class CurrencyPairsRunnerDataServiceTest {
     private static final String[] KEYS = {"EURUSD", "EURJPG", "USDJPG", "USDEUR", "EURAUD", "USDAUD", "AURGBP"};
     @Autowired
     private CurrencyPairRepository  currencyPairRepository;

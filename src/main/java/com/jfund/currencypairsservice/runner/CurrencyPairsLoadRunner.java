@@ -1,4 +1,4 @@
-package com.jfund.currencypairsservice.command;
+package com.jfund.currencypairsservice.runner;
 
 import com.jfund.currencypairsservice.model.CurrencyPair;
 import com.jfund.currencypairsservice.service.LoadCurrencyPairsService;
@@ -8,15 +8,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
-@Slf4j(topic = "errors")
+@Slf4j
 @Component
 @RequiredArgsConstructor
-public class CurrencyPairsLoader {
+public class CurrencyPairsLoadRunner {
     private final ReplaceCurrencyPairService replaceCurrencyPairService;
     private final LoadCurrencyPairsService loadCurrencyPairsService;
 
-    public void invoke() {
+    public void run() {
         Flux<CurrencyPair> currencyPairsFromApi = loadCurrencyPairsService.getCurrencyPairsFlux();
-        replaceCurrencyPairService.replaceCurrencyPairs(currencyPairsFromApi).subscribe();
+        replaceCurrencyPairService.replaceCurrencyPairs(currencyPairsFromApi)
+                .doOnError(e -> log.error(e.getMessage()))
+                .subscribe();
     }
 }

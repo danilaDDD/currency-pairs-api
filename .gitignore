@@ -37,4 +37,5 @@ amplicode.xml
 ### VS Code ###
 .vscode/
 /src/main/resources/customelibs/
-/logs/*
+
+/src/main/resources/logs/error.log
