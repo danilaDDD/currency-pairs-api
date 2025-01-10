@@ -1,17 +1,20 @@
 package com.jfund.currencypairsservice.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
-@Table(name = "currency_pairs")
+@Setter
 @AllArgsConstructor
+@Table(name = "currency_pairs")
 public class CurrencyPair {
     public static CurrencyPair ofCode(String code){
         String fromKey = code.substring(0, 3);
@@ -20,9 +23,9 @@ public class CurrencyPair {
         return new CurrencyPair(fromKey, toKey, true);
     }
 
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "from_key", nullable = false)
@@ -31,7 +34,6 @@ public class CurrencyPair {
     @Column(name = "to_key", nullable = false)
     private String toKey;
 
-    @Setter
     @Column(name = "show_in_candle", nullable = false)
     private boolean showInCandle = true;
 

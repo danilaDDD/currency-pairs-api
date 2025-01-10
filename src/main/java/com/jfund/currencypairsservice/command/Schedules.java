@@ -14,12 +14,12 @@ public class Schedules {
     private final CurrencyPairsRunner kafkaSendCurrencyKeys;
     private final CurrencyPairsLoadRunner currencyPairsLoadRunner;
 
-    @Scheduled(fixedRate = 50_000)
+    @Scheduled(fixedRate = 50_0000)
     public void sendCurrencyKeysByKafka(){
         kafkaSendCurrencyKeys.run();
     }
 
-    @Scheduled(fixedRate = 50_00000)
+    @Scheduled(fixedRate = 50_000000)
     public void loadCurrencyKeysFromApi(){
         currencyPairsLoadRunner.run();
     }

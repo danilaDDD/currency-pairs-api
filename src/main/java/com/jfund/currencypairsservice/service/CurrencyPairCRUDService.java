@@ -14,4 +14,8 @@ public class CurrencyPairCRUDService {
     public Flux<CurrencyPair> findActiveAll() {
         return currencyPairRepository.findAllByShowInCandleTrue();
     }
+
+    public Flux<CurrencyPair> findAll() {
+        return currencyPairRepository.findAll();
+    }
 }
