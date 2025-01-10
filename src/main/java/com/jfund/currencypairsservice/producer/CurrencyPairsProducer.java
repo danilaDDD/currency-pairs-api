@@ -15,6 +15,13 @@ public class CurrencyPairsProducer {
     private final CurrencyPairsProducerDataService currencyPairsProducerDataService;
     private final ProducerSettings producerSettings;
 
+    /**
+     * serialized object:
+     * {"serializedData":"[\"EURUSD\",\"EURJPG\",\"USDJPG\",\"USDEUR\",\"EURAUD\",\"USDAUD\",\"AURGBP\"]",
+     * "empty":false,
+     * "createdAt":"2025-01-09T18:36:15.890916053"}
+     */
+
     public void sendCurrencyKeys() {
         Mono<CurrencyPairsProducerData> producerDataMono = currencyPairsProducerDataService.getSerializedData();
         producerDataMono.subscribe(producerData ->

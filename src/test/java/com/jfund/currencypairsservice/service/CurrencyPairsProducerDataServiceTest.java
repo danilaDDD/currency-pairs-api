@@ -1,5 +1,7 @@
 package com.jfund.currencypairsservice.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jfund.currencypairsservice.data.CurrencyPairsProducerData;
 import com.jfund.currencypairsservice.model.CurrencyPair;
 import com.jfund.currencypairsservice.repository.CurrencyPairRepository;
@@ -26,6 +28,8 @@ class CurrencyPairsProducerDataServiceTest {
     private CurrencyPairRepository  currencyPairRepository;
     @Autowired
     private CurrencyPairsProducerDataService currencyPairsProducerDataService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -38,7 +42,11 @@ class CurrencyPairsProducerDataServiceTest {
 
         List<CurrencyPair> existPairList = Stream.of(KEYS).map(CurrencyPair::ofCode).toList();
         currencyPairRepository.saveAll(existPairList).blockLast();
-
+        try {
+            System.out.println(objectMapper.writeValueAsString(expected));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         StepVerifier.create(currencyPairsProducerDataService.getSerializedData())
                 .expectNext(expected)
                 .verifyComplete();
