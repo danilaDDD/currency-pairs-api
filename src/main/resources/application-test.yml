@@ -1,3 +1,7 @@
+eureka:
+  client:
+    enabled: false
+
 spring:
   r2dbc:
     url: ${DATABASE_URL:r2dbc:postgresql://localhost:5432/jfund_test_currency_pairs}
@@ -10,8 +14,3 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
-currencyApi:
-  accessKey: ${CURRENCY_ACCESS_KEY:ec142f3d17eb97486b71d155d609471a}
-eureka:
-  client:
-    enabled: false

@@ -29,6 +29,6 @@ public class CurrencyPairsRunner implements Runnable {
         producerDataMono
                 .doOnError(e -> log.error(e.getMessage()))
                 .subscribe(producerData ->
-                kafkaTemplate.send(producerSettings.getTopic(), producerData.getSerializedData()));
+                kafkaTemplate.send(producerSettings.getCurrencyKeysTopic(), producerData.getSerializedData()));
     }
 }
