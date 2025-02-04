@@ -11,10 +11,11 @@ import reactor.core.publisher.Flux;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class CurrencyPairsLoadRunner {
+public class LoadCurrencyPairsRunner implements Runnable{
     private final ReplaceCurrencyPairService replaceCurrencyPairService;
     private final LoadCurrencyPairsService loadCurrencyPairsService;
 
+    @Override
     public void run() {
         Flux<CurrencyPair> currencyPairsFromApi = loadCurrencyPairsService.getCurrencyPairsFlux();
         replaceCurrencyPairService.replaceCurrencyPairs(currencyPairsFromApi)

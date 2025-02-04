@@ -13,23 +13,31 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CurrencyPairsProducerDataService {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private final ObjectMapper objectMapper;
     private final CurrencyPairCRUDService currencyPairCRUDService;
 
-    public Mono<CurrencyPairsProducerData> getSerializedData() {
+    public Mono<String> getSerializedData() {
             return currencyPairCRUDService.findActiveAll()
                 .map(CurrencyPair::getKey)
                 .collectList().flatMap(keys -> {
-                    if (keys.isEmpty()) {
-                        return Mono.just(new CurrencyPairsProducerData("[]", true));
+                    try{
+                        CurrencyPairsProducerData currencyPairsProducerData;
+                        if (keys.isEmpty()) {
+                            currencyPairsProducerData = new CurrencyPairsProducerData("[]", true);
+                        }else {
+                            currencyPairsProducerData = new CurrencyPairsProducerData(serializedData(keys));
+                        }
+                        return Mono.just(objectMapper
+                                .writeValueAsString(currencyPairsProducerData));
+                    } catch (JsonProcessingException e) {
+                        return Mono.error(new RuntimeException(e));
                     }
-                    return Mono.just(new CurrencyPairsProducerData(serializedData(keys)));
                 });
     }
 
     private String serializedData(List<String> keys) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(keys);
+            return objectMapper.writeValueAsString(keys);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

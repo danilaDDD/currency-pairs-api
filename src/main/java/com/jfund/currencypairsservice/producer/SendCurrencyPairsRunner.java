@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class CurrencyPairsRunner implements Runnable {
+public class SendCurrencyPairsRunner implements Runnable {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final CurrencyPairsProducerDataService currencyPairsProducerDataService;
     private final ProducerSettings producerSettings;
@@ -25,10 +25,10 @@ public class CurrencyPairsRunner implements Runnable {
      */
 
     public void run() {
-        Mono<CurrencyPairsProducerData> producerDataMono = currencyPairsProducerDataService.getSerializedData();
+        Mono<String> producerDataMono = currencyPairsProducerDataService.getSerializedData();
         producerDataMono
                 .doOnError(e -> log.error(e.getMessage()))
                 .subscribe(producerData ->
-                kafkaTemplate.send(producerSettings.getCurrencyKeysTopic(), producerData.getSerializedData()));
+                kafkaTemplate.send(producerSettings.getCurrencyKeysTopic(), producerData));
     }
 }

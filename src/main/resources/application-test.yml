@@ -14,3 +14,12 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+
+app:
+  scheduler:
+    enabled: false
+    load-currency-keys: ${LOAD_CURRENCY_KEYS_CRON:1 */5 * * * *}
+    send-currency-keys: ${SEND_CURRENCY_KEYS_CRON:*/30 * * * * *}
+  kafka:
+    server: ${KAFKA_SERVER:localhost:9092}
+    currency-keys-topic: ${CURRENCY_KEYS_TOPIC:currency-keys-topic}
